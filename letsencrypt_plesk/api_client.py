@@ -18,10 +18,8 @@ class PleskApiClient(object):
     CLI_PATH = os.path.join(PSA_PATH, "bin")
     BIN_PATH = os.path.join(PSA_PATH, "admin", "bin")
 
-    def __init__(self, host='127.0.0.1', port=8443, secret_key=None):
-        self.host = host
-        self.port = port
-        self.scheme = 'https' if port == 8443 else 'http'
+    def __init__(self, uri='https://127.0.0.1:8443', secret_key=None):
+        self.uri = uri
         self.secret_key_created = False
         self.secret_key = secret_key
 
@@ -49,10 +47,7 @@ class PleskApiClient(object):
             'KEY': self.get_secret_key(),
         }
         response = requests.post(
-            "{scheme}://{host}:{port}/enterprise/control/agent.php".format(
-                scheme=self.scheme,
-                host=self.host,
-                port=self.port),
+            "{uri}/enterprise/control/agent.php".format(uri=self.uri),
             verify=False,
             headers=headers,
             data=request)

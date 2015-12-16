@@ -29,6 +29,8 @@ class PleskConfigurator(common.Plugin):
     def add_parser_arguments(cls, add):
         add("secret-key", default=os.getenv('LE_PLESK_SECRET_KEY'),
             help="Plesk API-RPC authentication secret key.")
+        add("api-uri", default='https://127.0.0.1:8443',
+            help="Plesk URI used for API entry point.")
 
     def __init__(self, *args, **kwargs):
         """Initialize Plesk Configurator."""
@@ -43,6 +45,7 @@ class PleskConfigurator(common.Plugin):
         """Prepare the authenticator/installer."""
         if self.plesk_api_client is None:
             self.plesk_api_client = api_client.PleskApiClient(
+                uri=self.conf('api-uri'),
                 secret_key=self.conf('secret-key'))
         self.plesk_api_client.check_version()
 
